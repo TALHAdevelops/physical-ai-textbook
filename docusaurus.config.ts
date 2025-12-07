@@ -18,7 +18,7 @@ const config: Config = {
   url: 'https://yourusername.github.io', // Placeholder for GitHub Pages URL
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/physical-ai-textbook/', // Base URL for GitHub Pages deployment
+  baseUrl: '/', // Base URL for GitHub Pages deployment
 
   markdown: {
     mermaid: true,
