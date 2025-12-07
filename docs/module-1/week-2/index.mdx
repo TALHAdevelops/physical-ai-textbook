@@ -1,0 +1,97 @@
+---
+sidebar_position: 1
+sidebar_label: 'Sensor Systems'
+---
+
+import LearningObjective from '@site/src/components/LearningObjective';
+import KeyConcept from '@site/src/components/KeyConcept';
+import HardwareSpec from '@site/src/components/HardwareSpec';
+
+# Week 2: Sensor Systems for Physical AI
+
+<LearningObjective>
+  Gain an in-depth understanding of various sensor types used in Physical AI and humanoid robotics, their operating principles, and typical applications.
+</LearningObjective>
+
+## Deep Dive into Sensor Modalities
+
+Building on the introduction from Week 1, this week explores the specifics of different sensor technologies crucial for robots to perceive and interact with their environment.
+
+### 1. Vision Systems: Beyond the Human Eye
+
+Cameras are arguably the most important sensors for many Physical AI applications.
+
+*   **Monocular Cameras**:
+    *   **Principle**: Single camera captures 2D image.
+    *   **Applications**: Object detection, recognition, tracking (with advanced algorithms), visual odometry.
+    *   **Limitations**: No direct depth information.
+
+*   **Stereo Cameras**:
+    *   **Principle**: Two cameras placed side-by-side, mimicking human binocular vision. Disparity between images provides depth.
+    *   **Applications**: 3D reconstruction, obstacle avoidance, grasping.
+    *   **Example**: `ZED Camera`.
+
+*   **RGB-D Cameras**:
+    *   **Principle**: Combines a standard RGB camera with a depth sensor (e.g., structured light, Time-of-Flight).
+    *   **Applications**: Human-robot interaction, object manipulation, indoor navigation.
+    *   **Examples**: `Microsoft Kinect`, `Intel RealSense`.
+
+<KeyConcept title="Depth Perception">
+  The ability to estimate the distance of objects from the sensor. Essential for safe navigation, avoiding collisions, and performing manipulation tasks in 3D space.
+</KeyConcept>
+
+### 2. Range Sensors: Measuring Distance
+
+Beyond vision, dedicated range sensors provide precise distance measurements.
+
+*   **LIDAR (Light Detection and Ranging)**:
+    *   **Principle**: Emits laser pulses and measures time-of-flight for reflections.
+    *   **Types**: 2D (rotating mirror for a single plane), 3D (multiple layers or spinning array).
+    *   **Applications**: SLAM (Simultaneous Localization and Mapping), navigation, object detection in complex environments.
+    *   **Example**: `Velodyne LIDAR`, `RPLIDAR`.
+
+*   **Ultrasonic Sensors**:
+    *   **Principle**: Emits high-frequency sound waves and measures the time it takes for the echo to return.
+    *   **Applications**: Short-range obstacle detection, proximity sensing.
+    *   **Limitations**: Sensitive to surface properties, beam divergence.
+
+### 3. Proprioceptive Sensors: Understanding Self-State
+
+These sensors provide information about the robot's own state (position, orientation, joint angles), which is critical for control and locomotion.
+
+*   **IMUs (Inertial Measurement Units)**:
+    *   **Components**: Accelerometer (measures linear acceleration), Gyroscope (measures angular velocity), Magnetometer (measures magnetic field for heading).
+    *   **Applications**: Robot stabilization, odometry (dead reckoning), posture estimation.
+    *   **Example**: `MPU-6050`.
+
+*   **Encoders**:
+    *   **Principle**: Mounted on motor shafts, measure angular position or displacement.
+    *   **Applications**: Joint position control, wheel odometry for mobile robots.
+    *   **Types**: Optical, Magnetic.
+
+### 4. Force/Torque Sensors: The Sense of Touch
+
+Force/Torque sensors enable robots to interact with objects and their environment with a sense of "touch," applying appropriate forces.
+
+*   **Principle**: Measure forces and torques acting on a robot's end-effector or joints.
+    *   **Applications**: Grasping delicate objects, compliant motion control, human-robot collaboration, teaching by demonstration.
+    *   **Example**: `ATI Industrial Automation F/T Sensors`.
+
+<HardwareSpec
+  name="Sensor Fusion for Mobile Robotics"
+  specs={[
+    { label: 'Primary Use Case', value: 'Autonomous Navigation' },
+    { label: 'LIDAR', value: 'Global mapping, obstacle avoidance' },
+    { label: 'Camera', value: 'Lane detection, traffic sign recognition' },
+    { label: 'IMU', value: 'Orientation, dead reckoning, stability' },
+    { label: 'GPS', value: 'Global positioning' },
+  ]}
+/>
+
+## Sensor Fusion
+
+Often, a single sensor type is insufficient for complex tasks. **Sensor fusion** is the process of combining data from multiple sensors to achieve a more accurate and comprehensive understanding of the environment and the robot's state. For example, combining LIDAR, camera, and IMU data to create robust maps and localize the robot within them.
+
+## Next Steps
+
+Next week, we will begin our deep dive into ROS 2, the foundational middleware for many modern robotics applications, exploring its architecture and core communication concepts.

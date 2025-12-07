@@ -1,0 +1,62 @@
+---
+sidebar_position: 1
+sidebar_label: 'Bipedal Locomotion and Grasping'
+---
+
+import LearningObjective from '@site/src/components/LearningObjective';
+import KeyConcept from '@site/src/components/KeyConcept';
+
+# Week 12: Bipedal Locomotion and Grasping
+
+<LearningObjective>
+  Delve into the complexities of bipedal locomotion, balance control, and dexterous manipulation, focusing on practical approaches and advanced techniques for humanoid robots.
+</LearningObjective>
+
+## 1. Bipedal Locomotion
+
+Bipedal locomotion, or walking on two legs, is a hallmark of humanoid robotics. It's a challenging task due to inherent instability and the need for continuous balance control.
+
+### Key Concepts:
+*   **Zero Moment Point (ZMP)**: Revisited from Week 11, ZMP is fundamental for stable walking. Control strategies often involve keeping the ZMP within the support polygon (the area defined by the robot's feet in contact with the ground).
+*   **Capture Point (CP)**: A dynamic stability margin that indicates where the robot's center of pressure needs to be to prevent falling. Useful for planning dynamic movements.
+*   **Walking Pattern Generators (WPGs)**: Algorithms that generate trajectories for the robot's center of mass and footfalls to achieve stable walking.
+    *   **Linear Inverted Pendulum Model (LIPM)**: A simplified model of bipedal locomotion that is widely used in WPGs to generate stable walking patterns.
+*   **Whole-Body Control (WBC)**: As discussed previously, WBC is essential for coordinating the many degrees of freedom of a humanoid robot during walking, simultaneously managing balance, posture, and movement objectives.
+
+### Balance Control Strategies:
+*   **Ankle Strategy**: Adjusting ankle torque to maintain balance, effective for small perturbations.
+*   **Hip Strategy**: Shifting the body's center of mass by moving the hips, used for larger disturbances.
+*   **Step Strategy**: Taking a step to regain balance, employed when other strategies are insufficient.
+
+<KeyConcept title="Compliance in Manipulation">
+  The ability of a robot to yield or deform in response to external forces during interaction. This is critical for safe interaction with humans and delicate objects, preventing damage and enabling more robust grasping.
+</KeyConcept>
+
+## 2. Manipulation and Grasping with Humanoid Hands
+
+Humanoid robots are often equipped with multi-fingered hands, similar to human hands, to perform dexterous manipulation. This area presents its own set of challenges.
+
+### Grasp Planning:
+*   **Form Closure**: A grasp where the object is fully constrained by the gripper, preventing any motion.
+*   **Force Closure**: A grasp where friction and contact forces prevent the object from slipping, even if it's not fully constrained.
+*   **Grasp Quality Metrics**: Quantifying the stability and robustness of a grasp (e.g., wrench space analysis).
+*   **Tactile Sensing**: Using touch sensors on fingertips to detect contact, pressure, and slippage, enhancing grasp robustness.
+
+### Dexterous Manipulation:
+*   **In-Hand Manipulation**: Re-positioning an object within the robot's hand without dropping it. This requires fine motor control and advanced sensing.
+*   **Tool Use**: Operating tools (e.g., screwdrivers, wrenches) requires precise force control and understanding of tool-object interaction.
+*   **Bimanual Manipulation**: Using two hands to cooperate on a task, similar to how humans perform many complex operations.
+
+## 3. Natural Human-Robot Interaction Design
+
+For humanoids to integrate effectively into human environments, their interactions must be intuitive and natural.
+
+### Key Aspects:
+*   **Social Cues**: Designing robots to understand and generate human social cues (e.g., gaze, facial expressions, body language).
+*   **Speech and Language**: Integrating natural language processing and speech recognition/synthesis for verbal communication.
+*   **Shared Autonomy**: Blending human guidance with robot autonomy, allowing humans to intervene when needed but empowering the robot to perform tasks independently.
+*   **Safety**: Ensuring physical safety during close-proximity interaction through compliant control, force limiting, and robust collision detection.
+
+## Next Steps
+
+In our final week, we will explore the exciting frontier of conversational robotics, integrating large language models (LLMs) like GPT into humanoid platforms to enable truly natural and multi-modal human-robot communication.

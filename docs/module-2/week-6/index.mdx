@@ -1,0 +1,154 @@
+---
+sidebar_position: 1
+sidebar_label: 'Gazebo Setup and URDF/SDF'
+---
+
+import LearningObjective from '@site/src/components/LearningObjective';
+
+# Week 6: Robot Simulation with Gazebo - Setup and URDF/SDF
+
+<LearningObjective>
+  Set up the Gazebo simulation environment, understand the role of URDF and SDF for robot description, and create basic robot models.
+</LearningObjective>
+
+## 1. Introduction to Gazebo
+
+Gazebo is a powerful 3D robot simulator. It accurately simulates robots and environments, offering capabilities to test algorithms, design robots, and perform training without real hardware. Gazebo integrates well with ROS 2, making it an indispensable tool for robotics development.
+
+### Key Features of Gazebo:
+*   **Physics Engine**: Supports ODE, Bullet, Simbody, and DART for realistic rigid-body dynamics.
+*   **High-Quality Graphics**: Renders realistic environments and robot models.
+*   **Sensor Simulation**: Accurate simulation of various sensors (cameras, LIDAR, IMU, force sensors).
+*   **Plugins**: Extend functionality for custom sensors, actuators, and control interfaces.
+*   **ROS 2 Integration**: Seamless communication with ROS 2 nodes for control and data exchange.
+
+## 2. Installing Gazebo with ROS 2
+
+Gazebo typically comes bundled with ROS 2 installations. For a fresh setup on Ubuntu, you would follow the ROS 2 installation instructions, which include Gazebo.
+
+```bash
+# Example for Humble Hawksbill on Ubuntu 22.04
+sudo apt install ros-humble-desktop-full # Includes ROS 2, RViz, and Gazebo
+```
+
+After installation, you can launch Gazebo:
+```bash
+gazebo # To launch the GUI
+```
+
+## 3. Robot Description Formats: URDF and SDF
+
+Describing your robot accurately is crucial for simulation. ROS 2 primarily uses URDF (Unified Robot Description Format) for single robot descriptions, while Gazebo uses SDF (Simulation Description Format) for a broader range of elements including robots, environments, and even light sources.
+
+### URDF (Unified Robot Description Format)
+
+*   **Purpose**: Describes the kinematic and dynamic properties of a single robot.
+*   **Structure**: XML format defining `link` (rigid bodies) and `joint` (connections between links) elements.
+*   **Used by**: ROS 2 packages, RViz (ROS Visualization).
+*   **Limitations**: Cannot describe environmental objects, only single robots, and lacks information about physics properties specific to simulation (e.g., friction, damping).
+
+```xml
+<!-- basic_robot.urdf -->
+<robot name="simple_box_robot">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.2 0.2 0.1"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.2 0.2 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+</robot>
+```
+
+To visualize a URDF in RViz:
+```bash
+ros2 launch urdf_tutorial display.launch.py model:=path/to/basic_robot.urdf
+```
+
+### SDF (Simulation Description Format)
+
+*   **Purpose**: A more comprehensive XML format for describing everything in a Gazebo simulation: robots, static objects, lights, terrains, and sensors.
+*   **Structure**: Defines `model`, `link`, `joint`, `collision`, `visual`, `inertial`, `sensor`, and `plugin` elements.
+*   **Used by**: Gazebo.
+*   **Advantages**: Can encapsulate complex worlds, including physics parameters that URDF lacks.
+
+```xml
+<!-- simple_world.sdf -->
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <world name="default">
+    <light name="sun" type="directional">
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>
+```
+
+### Converting URDF to SDF
+
+Gazebo can load URDF files, and it will often convert them internally to SDF. However, for complex simulations and environmental descriptions, it's often better to work directly with SDF.
+
+## Next Steps
+
+Next week, we will explore advanced physics and sensor simulation within Gazebo, and introduce Unity for high-fidelity robot visualization and simulation.

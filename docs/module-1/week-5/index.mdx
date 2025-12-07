@@ -1,0 +1,215 @@
+---
+sidebar_position: 1
+sidebar_label: 'ROS 2 Python Packages'
+---
+
+import LearningObjective from '@site/src/components/LearningObjective';
+
+# Week 5: ROS 2 Python Packages and Tools
+
+<LearningObjective>
+  Learn how to create, build, and manage ROS 2 Python packages, including the use of `setup.py`, `package.xml`, launch files for complex system orchestration, and parameter management.
+</LearningObjective>
+
+## 1. Creating a ROS 2 Python Package
+
+A ROS 2 package is the fundamental unit of organization for ROS 2 code. It contains source files, libraries, scripts, configuration files, and other resources.
+
+### Using `ros2 pkg create`
+
+The easiest way to create a new package is using the `ros2 pkg create` command:
+
+```bash
+cd ~/ros2_ws/src # Navigate to your ROS 2 workspace source directory
+ros2 pkg create --build-type ament_python my_python_pkg
+```
+
+This command creates a new directory `my_python_pkg` with a basic structure, including `package.xml` and `setup.py`.
+
+### `package.xml`
+
+This file defines the package's metadata (name, version, description, maintainers, license) and its dependencies.
+
+```xml
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.ros.org/2001/XMLSchema"?>
+<package format="3">
+  <name>my_python_pkg</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="user@todo.todo">user</maintainer>
+  <license>TODO: License declaration</license>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend> # Add dependencies for messages used
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
+```
+
+### `setup.py`
+
+This Python script is used by `ament_python` to define how your package is built and what executables it provides.
+
+```python
+from setuptools import find_packages, setup
+import os
+from glob import glob
+
+package_name = 'my_python_pkg'
+
+setup(
+    name=package_name,
+    version='0.0.0',
+    packages=find_packages(exclude=['test']),
+    data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yem]'))), # For launch files
+    ],
+    install_requires=['setuptools'],
+    zip_safe=True,
+    maintainer='user',
+    maintainer_email='user@todo.todo',
+    description='TODO: Package description',
+    license='TODO: License declaration',
+    tests_require=['pytest'],
+    entry_points={
+        'console_scripts': [
+            'minimal_publisher = my_python_pkg.minimal_publisher:main',
+            'minimal_subscriber = my_python_pkg.minimal_subscriber:main',
+            'minimal_service = my_python_pkg.minimal_service:main',
+            'minimal_client = my_python_pkg.minimal_client:main',
+        ],
+    },
+)
+```
+
+## 2. Building and Installing Packages
+
+After creating or modifying your package, you need to build and install it from your workspace.
+
+```bash
+cd ~/ros2_ws
+colcon build --packages-select my_python_pkg # Build only your package
+source install/setup.bash # Source the setup file to make your package available
+```
+
+## 3. Launch Files: Orchestrating ROS 2 Systems
+
+Launch files are XML or Python files used to start multiple ROS 2 nodes and configure their parameters in a structured way. This is essential for complex robot systems.
+
+### Python Launch File Example
+
+```python
+# my_python_pkg/launch/my_robot_launch.py
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    return LaunchDescription([
+        Node(
+            package='my_python_pkg',
+            executable='minimal_publisher',
+            name='my_publisher',
+            output='screen',
+            emulate_tty=True, # Required for logging to console
+        ),
+        Node(
+            package='my_python_pkg',
+            executable='minimal_subscriber',
+            name='my_subscriber',
+            output='screen',
+            emulate_tty=True,
+        ),
+    ])
+```
+
+To run this launch file:
+
+```bash
+ros2 launch my_python_pkg my_robot_launch.py
+```
+
+## 4. Parameter Management
+
+Parameters are dynamic values that can be configured for a ROS 2 node at runtime.
+
+### Declaring Parameters in a Node
+
+```python
+# my_python_pkg/my_node_with_params.py
+import rclpy
+from rclpy.node import Node
+
+class MyNodeWithParams(Node):
+    def __init__(self):
+        super().__init__('my_node_with_params')
+        self.declare_parameter('my_parameter', 'default_value') # Declare a parameter
+        timer_period = 1.0
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+
+    def timer_callback(self):
+        my_param = self.get_parameter('my_parameter').get_parameter_value().string_value
+        self.get_logger().info(f'Hello with parameter: {my_param}')
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = MyNodeWithParams()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+### Setting Parameters
+
+1.  **From the command line**:
+    ```bash
+    ros2 run my_python_pkg my_node_with_params --ros-args -p my_parameter:="custom_value"
+    ```
+2.  **Using a YAML file (recommended for complex configs)**:
+    ```yaml
+    # my_params.yaml
+    my_node_with_params:
+      ros__parameters:
+        my_parameter: "value_from_yaml"
+    ```
+    ```bash
+    ros2 run my_python_pkg my_node_with_params --ros-args --params-file my_params.yaml
+    ```
+3.  **From a launch file**:
+
+    ```python
+    # my_python_pkg/launch/params_launch.py
+    from launch import LaunchDescription
+    from launch_ros.actions import Node
+
+    def generate_launch_description():
+        return LaunchDescription([
+            Node(
+                package='my_python_pkg',
+                executable='my_node_with_params',
+                name='parameter_node',
+                parameters=[
+                    {'my_parameter': 'value_from_launch'},
+                ],
+                output='screen',
+                emulate_tty=True,
+            ),
+        ])
+    ```
+
+## Next Steps
+
+With the fundamentals of ROS 2 communication and package management covered, we will shift our focus to robot simulation. Next week, we will set up Gazebo and learn how to describe robots using URDF and SDF.

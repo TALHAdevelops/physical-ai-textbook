@@ -1,0 +1,84 @@
+---
+sidebar_position: 1
+sidebar_label: 'Humanoid Kinematics and Dynamics'
+---
+
+import LearningObjective from '@site/src/components/LearningObjective';
+import KeyConcept from '@site/src/components/KeyConcept';
+import HardwareSpec from '@site/src/components/HardwareSpec';
+
+# Week 11: Humanoid Kinematics and Dynamics
+
+<LearningObjective>
+  Understand the fundamental concepts of kinematics and dynamics as applied to humanoid robots, including forward and inverse kinematics, and the challenges of modeling complex bipedal systems.
+</LearningObjective>
+
+## 1. Introduction to Humanoid Robots
+
+Humanoid robots are complex machines designed to mimic human form and movement. Their unique morphology (bipedalism, multiple articulated limbs, dexterous hands) presents significant challenges and opportunities in robotics.
+
+### Why Humanoids?
+*   **Human-centric environments**: Designed to operate in spaces built for humans (e.g., homes, offices, factories).
+*   **Human-Robot Interaction**: Facilitates natural interaction with humans through gestures, expressions, and communication.
+*   **Versatility**: Potentially capable of performing a wide range of tasks designed for humans.
+
+## 2. Kinematics of Humanoid Robots
+
+Kinematics deals with the description of motion without considering the forces causing it. For humanoids, this involves understanding the position and orientation of their body parts.
+
+### Forward Kinematics (FK)
+*   **Definition**: Given the joint angles of a robot, calculate the position and orientation (pose) of a specific end-effector (e.g., hand, foot, head).
+*   **Process**: Typically involves multiplying transformation matrices along a kinematic chain. Each joint introduces a transformation (rotation and translation).
+*   **Application**: Determining where the robot's hand is located for a given set of joint commands.
+
+### Inverse Kinematics (IK)
+*   **Definition**: Given the desired pose of an end-effector, calculate the required joint angles.
+*   **Challenge**: More complex than FK. Often involves non-linear equations, multiple solutions (redundancy), or no feasible solutions.
+*   **Methods**:
+    *   **Analytical Solutions**: Closed-form equations for simpler kinematic chains (rare for humanoids).
+    *   **Numerical Solutions**: Iterative optimization algorithms (e.g., Jacobian-based methods) that converge to a solution.
+*   **Application**: Moving a robot's hand to grasp an object at a specific location; calculating foot placements for walking.
+
+<KeyConcept title="Degrees of Freedom (DoF)">
+  The number of independent parameters that define the configuration of a mechanical system. Humanoid robots have a high number of DoF (e.g., 20-30 for upper body, 6-7 per leg), making their control complex.
+</KeyConcept>
+
+## 3. Dynamics of Humanoid Robots
+
+Dynamics deals with the relationship between forces, torques, and the resulting motion. For humanoids, this is critical for balance, locomotion, and physical interaction.
+
+### Lagrangian and Newton-Euler Formulations
+*   **Lagrangian Dynamics**: Energy-based approach, often more computationally efficient for complex systems.
+*   **Newton-Euler Dynamics**: Force-based approach, useful for understanding individual joint forces and torques.
+
+### Center of Mass (CoM) and Zero Moment Point (ZMP)
+*   **Center of Mass (CoM)**: The average position of all the mass in the robot. Its projection onto the ground is crucial for balance.
+*   **Zero Moment Point (ZMP)**: The point on the ground where the net moment of all forces (gravity, inertia, contact) is zero. For stable walking, the ZMP must remain within the support polygon (the area defined by the robot's feet on the ground).
+*   **Application**: ZMP control is a fundamental strategy for achieving stable bipedal locomotion.
+
+### Whole-Body Control
+*   **Definition**: A control approach that coordinates all the robot's joints and end-effectors simultaneously to achieve multiple tasks while respecting physical constraints (e.g., joint limits, contact forces, balance).
+*   **Importance**: Essential for natural and agile humanoid movement.
+
+<HardwareSpec
+  name="Atlas Humanoid Robot (Boston Dynamics)"
+  specs={[
+    { label: 'Height', value: '1.5 m (4 ft 11 in)' },
+    { label: 'Weight', value: '89 kg (196 lb)' },
+    { label: 'Degrees of Freedom', value: '28 hydraulic joints' },
+    { label: 'Power Source', value: 'Electric pump, hydraulic actuation' },
+    { label: 'Max Speed', value: '2.5 m/s (8.2 ft/s)' },
+  ]}
+/>
+
+## 4. Modeling Tools
+
+*   **URDF/SDF**: Used to define the kinematic and dynamic properties of the robot.
+*   **Simulators (Gazebo, Isaac Sim)**: For testing and validating kinematic and dynamic models.
+*   **Libraries**:
+    *   **KDL (Kinematics and Dynamics Library)**: A C++ library often used in ROS for kinematics.
+    *   **Pinocchio**: A C++ template library for efficient computation of rigid body dynamics.
+
+## Next Steps
+
+In Week 12, we will build upon these foundational concepts to explore the practical aspects of bipedal locomotion, balance control, and manipulation with humanoid hands, moving from theory to implementation strategies.

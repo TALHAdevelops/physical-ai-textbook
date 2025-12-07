@@ -1,0 +1,70 @@
+---
+sidebar_position: 1
+sidebar_label: 'Isaac SDK and Isaac Sim'
+---
+
+import LearningObjective from '@site/src/components/LearningObjective';
+import KeyConcept from '@site/src/components/KeyConcept';
+import HardwareSpec from '@site/src/components/HardwareSpec';
+
+# Week 8: NVIDIA Isaac SDK and Isaac Sim
+
+<LearningObjective>
+  Introduce the NVIDIA Isaac SDK and Isaac Sim platforms, understanding their components, capabilities, and how they accelerate robotics development, especially for AI-powered applications.
+</LearningObjective>
+
+## 1. Introduction to NVIDIA Isaac Platform
+
+The NVIDIA Isaac platform is a comprehensive toolkit for robotics development, offering a rich set of tools for simulation, perception, navigation, and manipulation. It's designed to accelerate the development and deployment of AI-powered robots.
+
+### Key Components:
+*   **Isaac SDK**: A software development kit providing a framework for robotics applications, including perception, navigation, and manipulation modules, as well as tools for sensor processing, AI inference, and hardware acceleration.
+*   **Isaac Sim**: A scalable robotics simulation application built on NVIDIA Omniverse, providing high-fidelity, physically accurate virtual environments for developing, testing, and training AI-powered robots.
+
+## 2. NVIDIA Isaac SDK
+
+The Isaac SDK provides a modular and extensible framework for building robotic applications.
+
+### Core Concepts:
+*   **GEMs (GPU-accelerated Embodied Modules)**: Optimized algorithms and components for common robotics tasks like visual odometry, 3D object detection, and path planning.
+*   **Sight**: A web-based visualization and debugging tool for inspecting robot data and application state.
+*   **Graph-based Programming**: Applications are built by connecting GEMs and other components in a graph, defining data flow and control.
+*   **Hardware Acceleration**: Leverages NVIDIA GPUs for high-performance computing, crucial for AI and complex sensor processing.
+
+## 3. NVIDIA Isaac Sim
+
+Isaac Sim provides a highly realistic simulation environment for various robotics applications. It's built on NVIDIA Omniverse, a platform for 3D design and simulation.
+
+### Key Features:
+*   **High-Fidelity Simulation**: Physically accurate simulation of robots, sensors (cameras, LIDAR), and environments.
+*   **Photo-realistic Rendering**: Leverages RTX rendering for realistic visuals, beneficial for synthetic data generation for AI training.
+*   **Domain Randomization**: Automatically varies simulation parameters (e.g., textures, lighting, object positions) to improve the generalization of trained AI models to real-world conditions.
+*   **ROS 2 Bridge**: Seamless integration with ROS 2, allowing developers to use existing ROS 2 nodes and tools within Isaac Sim.
+*   **Synthetic Data Generation**: Generates vast amounts of labeled data for training AI models, bypassing the need for extensive real-world data collection.
+
+<KeyConcept title="Synthetic Data Generation">
+  The process of creating artificial data using simulations to train machine learning models. This is particularly valuable in robotics where collecting real-world data can be expensive, time-consuming, or dangerous.
+</KeyConcept>
+
+## 4. Why Isaac Sim for AI-Powered Robotics?
+
+Isaac Sim significantly reduces the time and cost associated with robotics development by:
+*   **Rapid Prototyping**: Quickly test and iterate on robot designs and control algorithms in a virtual environment.
+*   **Safe Experimentation**: Conduct experiments that would be dangerous or impractical in the real world.
+*   **Scalable Training**: Train AI models on massive amounts of synthetic data, accelerating learning cycles.
+*   **Sim-to-Real Transfer**: Develop models in simulation that can be directly deployed to real robots with minimal fine-tuning.
+
+<HardwareSpec
+  name="NVIDIA Jetson ORIN Nano (Typical for Edge Robotics)"
+  specs={[
+    { label: 'GPU', value: '1024-core NVIDIA Ampere architecture GPU' },
+    { label: 'AI Performance', value: '20-40 TOPS' },
+    { label: 'CPU', value: '6-core ARM Cortex-A78AE v8.2 64-bit CPU' },
+    { label: 'Memory', value: '8 GB 128-bit LPDDR5' },
+    { label: 'Power', value: '7W / 10W / 15W configurable' },
+  ]}
+/>
+
+## Next Steps
+
+In Week 9, we will dive deeper into AI-powered perception and manipulation techniques, exploring how to leverage Isaac SDK's GEMs and Isaac Sim's capabilities for advanced robotic tasks.
